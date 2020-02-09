@@ -1,11 +1,12 @@
-import Canvas from "canvas";
+import Canvas from "./canvas";
 
 export default class Board {
-    public static bgColour: string = '#555555';
+    public static bgColour: string = '#000000';
 
     public static draw(): void {
-        const canvas = new Canvas(640, 800);
+        Canvas.fillCanvas(this.bgColour);
 
-        canvas.fill(this.bgColour);
+        // fill with bg colour
+        // draw lines
     }
 }

@@ -1,22 +1,17 @@
 export default class {
-    private width: number;
-    private height: number;
-    private canvas: HTMLCanvasElement;
-    private context: CanvasRenderingContext2D;
+    private static width: number;
+    private static height: number;
+    private static canvas: HTMLCanvasElement;
+    private static context: CanvasRenderingContext2D;
 
-    constructor(width: number, height: number) {
-        this.width = width;
-        this.height = height;
-    }
-
-    public init(): void {
-        this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
+    public static init(width: number, height: number, canvas: HTMLCanvasElement): void {
+        this.canvas = canvas;
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this.canvas.width = width;
+        this.canvas.height = height;
     }
 
-    public fill(color: string) {
+    public static fillCanvas(color: string) {
         this.context.beginPath();
         this.context.rect(0, 0, this.width, this.height);
         this.context.fillStyle = color;
