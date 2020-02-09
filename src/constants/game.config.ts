@@ -1,0 +1,7 @@
+export const CONFIG: any = {
+    UPDATE_INTERVAL: 1000, // ms
+
+    CANVAS_HEIGHT: 800,
+    CANVAS_WIDTH: 640,
+    CANVAS_BG_COLOR: '#000000'
+}
