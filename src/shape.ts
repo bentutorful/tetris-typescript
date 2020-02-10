@@ -5,6 +5,7 @@ export default class Shape {
     private color: string;
     private currentDir: number;
     private yOffset: number = 0;
+    private squareOccupied: boolean = true;
 
     constructor(dirs, color, currentDir) {
         this.dirs = dirs;
@@ -12,11 +13,7 @@ export default class Shape {
         this.currentDir = this.dirs[currentDir];
     }
 
-    private clearShape(): void {
-
-    }
-
-    public drawShape(): void {
+    public mapShapeMatrix(callback): void {
         let row = 0, col = 0;
         let x = 0, y = 0;
 
@@ -25,13 +22,29 @@ export default class Shape {
             y = (row + 1) * 20;
 
             if (this.currentDir & bit) {
-                Canvas.fillRect(x, y + (20 * this.yOffset   ), 20, 20, this.color);
+                callback(x, y)
             }
             if (++col === 4) {
                 col = 0;
                 ++row;
             }
         }
+    }
+
+    private clearShape(): void {
+        this.mapShapeMatrix(
+            (x, y): void => {
+                Canvas.clearRect(x, y + (20 * this.yOffset), 20, 20,);
+            }
+        )
+    }
+
+    public drawShape(): void {
+        this.mapShapeMatrix(
+            (x, y): void => {
+                Canvas.fillRect(x, y + (20 * this.yOffset), 20, 20, this.color);
+            }
+        );
     }
 
     public lowerShape(): void {
