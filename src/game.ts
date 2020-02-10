@@ -34,6 +34,7 @@ export default class Game {
 
         Board.init();
         Board.draw();
+
         this.currentShape = this.generateRandomShape();
         this.currentShape.drawShape();
 

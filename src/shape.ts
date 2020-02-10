@@ -1,11 +1,13 @@
 import Canvas from "./canvas";
+import Board from "./board";
+import { CONFIG } from './constants/game.config';
+import { IPosition } from './types/position';
 
 export default class Shape {
     private dirs: number[];
     private color: string;
     private currentDir: number;
     private yOffset: number = 0;
-    private squareOccupied: boolean = true;
 
     constructor(dirs, color, currentDir) {
         this.dirs = dirs;
@@ -13,16 +15,26 @@ export default class Shape {
         this.currentDir = this.dirs[currentDir];
     }
 
-    public mapShapeMatrix(callback): void {
+    private calculateXandY(col, row): IPosition {
+        let x = ((col + 1) * CONFIG.TILE_WIDTH) - CONFIG.BOARD_START_X;
+        let y = ((row + 1) * CONFIG.TILE_HEIGHT) - CONFIG.BOARD_START_Y;
+
+        if (this.yOffset > 0) {
+            y += CONFIG.TILE_HEIGHT * this.yOffset
+        }
+
+        return {
+            x,
+            y
+        }
+    }
+
+    private mapShapeMatrix(callback): void {
         let row = 0, col = 0;
-        let x = 0, y = 0;
 
         for (let bit = 0x8000; bit > 0; bit = bit >> 1) {
-            x = (col + 1) * 20;
-            y = (row + 1) * 20;
-
             if (this.currentDir & bit) {
-                callback(x, y)
+                callback(col, row)
             }
             if (++col === 4) {
                 col = 0;
@@ -33,23 +45,29 @@ export default class Shape {
 
     private clearShape(): void {
         this.mapShapeMatrix(
-            (x, y): void => {
-                Canvas.clearRect(x, y + (20 * this.yOffset), 20, 20,);
+            (col, row): void => {
+                const pos = this.calculateXandY(col, row);
+
+                Canvas.clearRect(pos.x, pos.y, CONFIG.TILE_WIDTH, CONFIG.TILE_HEIGHT);
             }
         )
     }
 
     public drawShape(): void {
         this.mapShapeMatrix(
-            (x, y): void => {
-                Canvas.fillRect(x, y + (20 * this.yOffset), 20, 20, this.color);
+            (col, row): void => {
+                const pos = this.calculateXandY(col, row);
+
+                // TODO work out inner stroke
+                Canvas.fillRect(pos.x + 3, pos.y + 3, CONFIG.TILE_WIDTH - 6, CONFIG.TILE_HEIGHT - 6, this.color);
+                Canvas.strokeRect(pos.x + 3, pos.y + 3, CONFIG.TILE_WIDTH - 6, CONFIG.TILE_HEIGHT - 6, 6, 'red')
             }
         );
     }
 
     public lowerShape(): void {
-        // TODO clear shape before redraw
         this.clearShape();
+        Board.draw();
         this.yOffset += 1;
         this.drawShape();
     }

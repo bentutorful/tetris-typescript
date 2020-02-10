@@ -3,12 +3,19 @@ import { IShapes } from '../types/shapes';
 export const CONFIG: any = {
     UPDATE_INTERVAL: 1000, // ms
 
-    CANVAS_HEIGHT: 800,
+    CANVAS_HEIGHT: 840,
     CANVAS_WIDTH: 640,
-    CANVAS_BG_COLOR: '#000000',
+    CANVAS_BG_COLOR: '#555555',
+    BOARD_BG_COLOR: '#000000',
 
-    BOARD_WIDTH: 10,
-    BOARD_HEIGHT: 20
+    // Board/tile sizes
+    BOARD_START_X: 20, // px
+    BOARD_START_Y: 20, // px
+    TILE_WIDTH: 40, // px
+    TILE_HEIGHT: 40, // px
+
+    get BOARD_WIDTH() { return this.TILE_WIDTH * 10 },
+    get BOARD_HEIGHT() { return this.TILE_HEIGHT * 20 }
 }
 
 export const SHAPES: IShapes = {
