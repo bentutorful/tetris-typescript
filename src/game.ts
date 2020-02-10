@@ -1,14 +1,15 @@
 import Board from "./board";
 import Canvas from "./canvas";
-import { CONFIG } from './constants/game.config';
+import { CONFIG, SHAPES } from './constants/game.config';
+import Shape from './shape';
 
 export default class Game {
-    private start: DOMHighResTimeStamp;
+    private currentTime: DOMHighResTimeStamp = 0;
+    private lastTime: DOMHighResTimeStamp;
     private stopMain: DOMHighResTimeStamp;
     private updateInterval: number;
 
-    // You can stop the game at any point with:
-    // window.cancelAnimationFrame(Game.stopMain);
+    private currentShape: Shape;
 
     public init(): void {
         Canvas.init(
@@ -21,41 +22,48 @@ export default class Game {
         this.ready();
     }
 
+    private generateRandomShape(): Shape {
+        // TODO: Move this function and create randomness
+        const shape = SHAPES.i;
+        const newShape: Shape = new Shape(shape.dirs, shape.color, 0);
+        return newShape;
+    }
+
     private ready(): void {
         Canvas.fillCanvas(CONFIG.CANVAS_BG_COLOR);
 
         Board.init();
         Board.draw();
+        this.currentShape = this.generateRandomShape();
+        this.currentShape.drawShape();
 
         const startTime = window.performance.now();
-        this.start = startTime;
+        this.lastTime = startTime;
 
         this.gameLoop(startTime);
     }
 
     private update(tFrame: DOMHighResTimeStamp): void {
-        if ((tFrame - this.start) > this.updateInterval) {
-            this.start = tFrame;
+        const deltaTime = tFrame - this.lastTime;
+        this.lastTime = tFrame;
+
+        this.currentTime += deltaTime;
+
+        if (this.currentTime > this.updateInterval) {
+            this.currentShape.lowerShape();
+            this.currentTime = 0;
         }
+
         return;
     }
 
-    // private render(): void {
-
-    // }
-
     public gameLoop = (tFrame: DOMHighResTimeStamp): void => {
+        // You can stop the game at any point with:
+        // window.cancelAnimationFrame(Game.stopMain);
         this.stopMain = window.requestAnimationFrame(this.gameLoop);
 
         this.update(tFrame);
-        // this.render();
     }
-
-    // draw
-    // timer
-    // key handler
-    // play/pause
-    // new shape
 }
 
 ;(() => {
