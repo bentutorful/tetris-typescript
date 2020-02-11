@@ -1,15 +1,16 @@
-import Board from "./board";
-import Canvas from "./canvas";
+import Board from "./Board";
+import Canvas from "./Canvas";
 import { CONFIG, SHAPES } from './constants/game.config';
-import Shape from './shape';
+import Shape from './Shape';
+import EventHandler from './EventHandler';
 
 export default class Game {
     private currentTime: DOMHighResTimeStamp = 0;
     private lastTime: DOMHighResTimeStamp;
     private stopMain: DOMHighResTimeStamp;
     private updateInterval: number;
-
     private currentShape: Shape;
+    private eventHandler: EventHandler;
 
     public init(): void {
         Canvas.init(
@@ -23,10 +24,25 @@ export default class Game {
     }
 
     private generateRandomShape(): Shape {
-        // TODO: Move this function and create randomness
-        const shape = SHAPES.i;
-        const newShape: Shape = new Shape(shape.dirs, shape.color, 0);
+        // TODO: Move this function and create randomness (random is currently fukd)
+        const pieces = ['i','j','l','o','s','t','z']
+        const next = pieces[Math.round(Math.random(0, pieces.length - 1))];
+
+        const newShape: Shape = new Shape(SHAPES[next].dirs, SHAPES[next].color, 0);
         return newShape;
+    }
+
+    private handleInput(): void {
+        // TODO move this elsewhere?
+        if (this.eventHandler.keyPressed(CONFIG.DOWN_KEY)) {
+            this.currentShape.lowerShape();
+        } else if (this.eventHandler.keyPressed(CONFIG.LEFT_KEY)) {
+            this.currentShape.leftShape();
+        } else if (this.eventHandler.keyPressed(CONFIG.RIGHT_KEY)) {
+            this.currentShape.rightShape();
+        } else if (this.eventHandler.keyPressed(CONFIG.UP_KEY)) {
+            this.currentShape.rotateShape();
+        }
     }
 
     private ready(): void {
@@ -38,6 +54,8 @@ export default class Game {
         this.currentShape = this.generateRandomShape();
         this.currentShape.drawShape();
 
+        this.eventHandler = new EventHandler();
+
         const startTime = window.performance.now();
         this.lastTime = startTime;
 
@@ -45,6 +63,7 @@ export default class Game {
     }
 
     private update(tFrame: DOMHighResTimeStamp): void {
+        this.handleInput();
         const deltaTime = tFrame - this.lastTime;
         this.lastTime = tFrame;
 
@@ -54,6 +73,7 @@ export default class Game {
             this.currentShape.lowerShape();
             this.currentTime = 0;
         }
+        this.eventHandler.reset();
 
         return;
     }

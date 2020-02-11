@@ -1,4 +1,4 @@
-import Canvas from "./canvas";
+import Canvas from "./Canvas";
 import { CONFIG } from './constants/game.config';
 
 export default class Board {

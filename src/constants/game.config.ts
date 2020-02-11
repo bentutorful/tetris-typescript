@@ -14,6 +14,12 @@ export const CONFIG: any = {
     TILE_WIDTH: 40, // px
     TILE_HEIGHT: 40, // px
 
+    // key codes
+    UP_KEY: 38,
+    DOWN_KEY: 40,
+    LEFT_KEY: 37,
+    RIGHT_KEY: 39,
+
     get BOARD_WIDTH() { return this.TILE_WIDTH * 10 },
     get BOARD_HEIGHT() { return this.TILE_HEIGHT * 20 }
 }
