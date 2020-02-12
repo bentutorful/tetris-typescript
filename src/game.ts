@@ -24,9 +24,9 @@ export default class Game {
     }
 
     private generateRandomShape(): Shape {
-        // TODO: Move this function and create randomness (random is currently fukd)
+        // TODO: Move this function, and possibly change random algorithm
         const pieces = ['i','j','l','o','s','t','z']
-        const next = pieces[Math.round(Math.random(0, pieces.length - 1))];
+        const next = pieces[Math.floor(Math.random() * (pieces.length - 0)) + 0];
 
         const newShape: Shape = new Shape(SHAPES[next].dirs, SHAPES[next].color, 0);
         return newShape;
