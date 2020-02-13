@@ -13,6 +13,8 @@ export const CONFIG: any = {
     BOARD_START_Y: 20, // px
     TILE_WIDTH: 40, // px
     TILE_HEIGHT: 40, // px
+    BOARD_WIDTH_TILES: 10, // px
+    BOARD_HEIGHT_TILES: 20, //px
 
     // key codes
     UP_KEY: 38,

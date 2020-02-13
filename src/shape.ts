@@ -22,7 +22,7 @@ export default class Shape {
         return { x, y }
     }
 
-    private mapShapeMatrix(callback): void {
+    public mapShapeMatrix(callback): void {
         let row = 0, col = 0;
 
         for (let bit = 0x8000; bit > 0; bit = bit >> 1) {
@@ -69,6 +69,8 @@ export default class Shape {
         );
     }
 
+    public collide
+
     private redraw(): void {
         this.clearShape();
         Board.draw();
@@ -96,7 +98,7 @@ export default class Shape {
         } else {
             this.currentDir++;
         }
-        console.log(this.currentDir);
+
         this.redraw();
     }
 }

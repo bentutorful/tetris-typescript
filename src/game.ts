@@ -11,17 +11,7 @@ export default class Game {
     private updateInterval: number;
     private currentShape: Shape;
     private eventHandler: EventHandler;
-
-    public init(): void {
-        Canvas.init(
-            CONFIG.CANVAS_WIDTH,
-            CONFIG.CANVAS_HEIGHT,
-            <HTMLCanvasElement>document.getElementById("gameCanvas")
-        );
-
-        this.updateInterval = CONFIG.UPDATE_INTERVAL;
-        this.ready();
-    }
+    private boardMatrix: number[][];
 
     private generateRandomShape(): Shape {
         // TODO: Move this function, and possibly change random algorithm
@@ -45,20 +35,55 @@ export default class Game {
         }
     }
 
+    private collide(): void {
+        this.currentShape.mapShapeMatrix(
+            (col: number, row: number) => {
+                if (this.boardMatrix[row] && this.boardMatrix[row][col] !== 0) {
+                    return true;
+                }
+                return false;
+            }
+        )
+    }
+
+    ////////////////////////
+
+    public init(): void {
+        Canvas.init(
+            CONFIG.CANVAS_WIDTH,
+            CONFIG.CANVAS_HEIGHT,
+            <HTMLCanvasElement>document.getElementById("gameCanvas")
+        );
+
+        this.updateInterval = CONFIG.UPDATE_INTERVAL;
+        this.ready();
+    }
+
     private ready(): void {
+        // Fill the canvas
         Canvas.fillCanvas(CONFIG.CANVAS_BG_COLOR);
 
+        // Draw the game board to the canvas
         Board.init();
         Board.draw();
 
+        // Generate the first shape
         this.currentShape = this.generateRandomShape();
         this.currentShape.drawShape();
 
+        // Set up our event handler
         this.eventHandler = new EventHandler();
 
+        // Create a matrix for the board to hold shapes
+        this.boardMatrix = Board.createBoardMatrix(CONFIG.BOARD_WIDTH_TILES, CONFIG.BOARD_HEIGHT_TILES);
+        Board.mergeShapeToMatrix(this.currentShape, this.boardMatrix);
+        console.table(this.boardMatrix);
+
+        // Get the initial game time
         const startTime = window.performance.now();
         this.lastTime = startTime;
 
+        // Start the game
         this.gameLoop(startTime);
     }
 
@@ -78,7 +103,7 @@ export default class Game {
         return;
     }
 
-    public gameLoop = (tFrame: DOMHighResTimeStamp): void => {
+    private gameLoop = (tFrame: DOMHighResTimeStamp): void => {
         // You can stop the game at any point with:
         // window.cancelAnimationFrame(Game.stopMain);
         this.stopMain = window.requestAnimationFrame(this.gameLoop);

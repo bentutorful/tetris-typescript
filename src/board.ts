@@ -1,4 +1,5 @@
 import Canvas from "./Canvas";
+import Shape from "./Shape";
 import { CONFIG } from './constants/game.config';
 
 export default class Board {
@@ -17,5 +18,21 @@ export default class Board {
         Canvas.fillRect(CONFIG.BOARD_START_X, CONFIG.BOARD_START_Y, this.width, this.height, this.bgColour);
 
         // draw grid
+    }
+
+    public static createBoardMatrix(w: number, h: number): number[][] {
+        const matrix = [];
+        while (h--) {
+            matrix.push(new Array(w). fill(0));
+        }
+        return matrix;
+    }
+
+    public static mergeShapeToMatrix(shape: Shape, matrix: number[][]) {
+        shape.mapShapeMatrix(
+            (col: number, row: number): void => {
+                matrix[row][col] = 1;
+            }
+        )
     }
 }
