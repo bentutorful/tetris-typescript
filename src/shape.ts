@@ -7,12 +7,26 @@ export default class Shape {
     private dirs: number[];
     private color: string;
     private currentDir: number;
-    private offset: IPosition = { x: 0, y: 0 };
+    public offset: IPosition = { x: 0, y: 0 };
 
     constructor(dirs, color, currentDir) {
         this.dirs = dirs;
         this.color = color;
         this.currentDir = currentDir;
+    }
+
+    private collide(boardMatrix): boolean {
+        // TODO figure out a way to return true or false properly
+        let collided = false;
+        this.mapShapeMatrix(
+            (col: number, row: number) => {
+                if ((boardMatrix[row + this.offset.y] &&
+                    boardMatrix[row + this.offset.y][col + this.offset.x]) !== 0) {
+                    collided = true;
+                }
+            }
+        )
+        return collided;
     }
 
     private calculateXandY(col, row): IPosition {
@@ -69,16 +83,20 @@ export default class Shape {
         );
     }
 
-    public collide
-
     private redraw(): void {
         this.clearShape();
         Board.draw();
         this.drawShape();
     }
 
-    public lowerShape(): void {
+    public lowerShape(boardMatrix: number[][]): void {
         this.offset.y += 1;
+        if (this.collide(boardMatrix)) {
+            this.offset.y -= 1;
+            Board.mergeShapeToMatrix(this, boardMatrix);
+            this.offset.y = 0;
+        }
+        console.log(this.offset.y);
         this.redraw();
     }
 

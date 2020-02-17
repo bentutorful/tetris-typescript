@@ -31,7 +31,7 @@ export default class Board {
     public static mergeShapeToMatrix(shape: Shape, matrix: number[][]) {
         shape.mapShapeMatrix(
             (col: number, row: number): void => {
-                matrix[row][col] = 1;
+                matrix[row + shape.offset.y][col + shape.offset.x] = 1;
             }
         )
     }

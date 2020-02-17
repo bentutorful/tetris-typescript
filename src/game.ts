@@ -25,7 +25,7 @@ export default class Game {
     private handleInput(): void {
         // TODO move this elsewhere?
         if (this.eventHandler.keyPressed(CONFIG.DOWN_KEY)) {
-            this.currentShape.lowerShape();
+            this.currentShape.lowerShape(this.boardMatrix);
         } else if (this.eventHandler.keyPressed(CONFIG.LEFT_KEY)) {
             this.currentShape.leftShape();
         } else if (this.eventHandler.keyPressed(CONFIG.RIGHT_KEY)) {
@@ -33,17 +33,6 @@ export default class Game {
         } else if (this.eventHandler.keyPressed(CONFIG.UP_KEY)) {
             this.currentShape.rotateShape();
         }
-    }
-
-    private collide(): void {
-        this.currentShape.mapShapeMatrix(
-            (col: number, row: number) => {
-                if (this.boardMatrix[row] && this.boardMatrix[row][col] !== 0) {
-                    return true;
-                }
-                return false;
-            }
-        )
     }
 
     ////////////////////////
@@ -77,7 +66,6 @@ export default class Game {
         // Create a matrix for the board to hold shapes
         this.boardMatrix = Board.createBoardMatrix(CONFIG.BOARD_WIDTH_TILES, CONFIG.BOARD_HEIGHT_TILES);
         Board.mergeShapeToMatrix(this.currentShape, this.boardMatrix);
-        console.table(this.boardMatrix);
 
         // Get the initial game time
         const startTime = window.performance.now();
@@ -95,7 +83,7 @@ export default class Game {
         this.currentTime += deltaTime;
 
         if (this.currentTime > this.updateInterval) {
-            this.currentShape.lowerShape();
+            this.currentShape.lowerShape(this.boardMatrix);
             this.currentTime = 0;
         }
         this.eventHandler.reset();
