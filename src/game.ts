@@ -65,7 +65,6 @@ export default class Game {
 
         // Create a matrix for the board to hold shapes
         this.boardMatrix = Board.createBoardMatrix(CONFIG.BOARD_WIDTH_TILES, CONFIG.BOARD_HEIGHT_TILES);
-        Board.mergeShapeToMatrix(this.currentShape, this.boardMatrix);
 
         // Get the initial game time
         const startTime = window.performance.now();

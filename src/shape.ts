@@ -15,39 +15,40 @@ export default class Shape {
         this.currentDir = currentDir;
     }
 
-    private collide(boardMatrix): boolean {
-        // TODO figure out a way to return true or false properly
-        let collided = false;
-        this.mapShapeMatrix(
-            (col: number, row: number) => {
-                if ((boardMatrix[row + this.offset.y] &&
-                    boardMatrix[row + this.offset.y][col + this.offset.x]) !== 0) {
-                    collided = true;
-                }
-            }
-        )
-        return collided;
-    }
-
-    private calculateXandY(col, row): IPosition {
+    private calculateXandY(col: number, row: number): IPosition {
         let x = ((col + 1 + this.offset.x) * CONFIG.TILE_WIDTH) - CONFIG.BOARD_START_X;
         let y = ((row + 1 + this.offset.y) * CONFIG.TILE_HEIGHT) - CONFIG.BOARD_START_Y;
 
         return { x, y }
     }
 
-    public mapShapeMatrix(callback): void {
+    public mapShapeMatrix(callback: (col: number, row: number) => any): boolean {
         let row = 0, col = 0;
 
         for (let bit = 0x8000; bit > 0; bit = bit >> 1) {
             if (this.dirs[this.currentDir] & bit) {
-                callback(col, row)
+                if (callback(col, row)) {
+                    return true;
+                }
             }
             if (++col === 4) {
                 col = 0;
                 ++row;
             }
         }
+
+        return false;
+    }
+
+    private collide(boardMatrix: number[][]): boolean {
+        return this.mapShapeMatrix(
+            (col: number, row: number): boolean => {
+                if ((boardMatrix[row + this.offset.y] &&
+                    boardMatrix[row + this.offset.y][col + this.offset.x]) !== 0) {
+                    return true;
+                }
+            }
+        )
     }
 
     private clearShape(): void {
@@ -96,7 +97,6 @@ export default class Shape {
             Board.mergeShapeToMatrix(this, boardMatrix);
             this.offset.y = 0;
         }
-        console.log(this.offset.y);
         this.redraw();
     }
 
