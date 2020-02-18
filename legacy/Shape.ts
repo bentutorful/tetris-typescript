@@ -84,9 +84,8 @@ export default class Shape {
         );
     }
 
-    private redraw(): void {
-        this.clearShape();
-        Board.draw();
+    private redraw(boardMatrix?: number[][]): void {
+        // Board.draw();
         this.drawShape();
     }
 
@@ -95,18 +94,37 @@ export default class Shape {
         if (this.collide(boardMatrix)) {
             this.offset.y -= 1;
             Board.mergeShapeToMatrix(this, boardMatrix);
+            Board.mapBoardMatrix(boardMatrix,
+                (x: number, y: number): void => {
+                    const posX = (x * 40) + CONFIG.BOARD_START_X;
+                    const posY = (y * 40) + CONFIG.BOARD_START_Y;
+
+                    Canvas.fillRect(
+                        posX,
+                        posY,
+                        CONFIG.TILE_WIDTH,
+                        CONFIG.TILE_HEIGHT,
+                        this.color
+                    );
+                }
+            )
             this.offset.y = 0;
+        } else {
+            this.clearShape();
+            Board.draw();
         }
         this.redraw();
     }
 
     public leftShape(): void {
         this.offset.x--;
+        this.clearShape();
         this.redraw();
     }
 
     public rightShape(): void {
         this.offset.x++;
+        this.clearShape();
         this.redraw();
     }
 
@@ -117,6 +135,7 @@ export default class Shape {
             this.currentDir++;
         }
 
+        this.clearShape();
         this.redraw();
     }
 }

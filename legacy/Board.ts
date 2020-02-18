@@ -20,6 +20,19 @@ export default class Board {
         // draw grid
     }
 
+    public static mapBoardMatrix(matrix: number[][], callback: (x: number, y: number) => any): boolean {
+        matrix.forEach((row, y) => {
+            row.forEach((value, x) => {
+                if (value !== 0) {
+                    if (callback(x, y)) {
+                        return true;
+                    }
+                }
+            });
+        });
+        return false;
+    }
+
     public static createBoardMatrix(w: number, h: number): number[][] {
         const matrix = [];
         while (h--) {

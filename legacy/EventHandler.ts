@@ -3,6 +3,7 @@ export default class EventHandler {
 
     constructor() {
         document.addEventListener('keydown', (e) => { this.keyboardDown(e) });
+        // document.addEventListener('keyup', (e) => { this.keyboardUp(e) })
     }
 
     private keyboardDown(event: KeyboardEvent): void {
