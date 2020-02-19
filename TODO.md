@@ -1,7 +1,5 @@
 # TODO
 
-* Scoring
-* Scoring UI
 * Game over
 * Start menu
 * Show next piece
@@ -15,6 +13,7 @@
     * How to play
 * Levels
     * Increase speed
+    * Scale scoring
 * More styling
     * Add grid to board
     * Show where piece will fall

@@ -12,12 +12,15 @@ export default class Game {
     lastTime: number = 0;
     currentTime: number = 0;
     eventHandler: EventHandler = new EventHandler();
+    scoreElement: HTMLSpanElement;
+    linesElement: HTMLSpanElement;
 
     player: IPlayer = {
         pos: { x: 3, y: 0 }
     };
     boardMatrix: number[][];
-
+    score: number = 0;
+    lines: number = 0;
 
     private generateRandomShape(): void {
         const pieces = ['I','I','I','I',
@@ -76,14 +79,15 @@ export default class Game {
         }
     }
 
-    private playerDrop (): void {
+    private playerDrop (softDrop?: boolean): void {
         this.player.pos.y++
+        if (softDrop && !this.collide()) {
+            this.scoreIncrement(1);
+        }
         if (this.collide()) {
             this.player.pos.y--;
             this.mergeShapeToBoard();
-            if (this.line()) {
-                console.log('you made a line!');
-            }
+            this.line();
             this.playerReset();
         }
         this.currentTime = 0;
@@ -123,7 +127,7 @@ export default class Game {
 
     private handleInput (): void {
         if (this.eventHandler.keyPressed(CONFIG.DOWN_KEY)) {
-            this.playerDrop();
+            this.playerDrop(true);
         } else if (this.eventHandler.keyPressed(CONFIG.LEFT_KEY)) {
             this.playerMove(-1);
         } else if (this.eventHandler.keyPressed(CONFIG.RIGHT_KEY)) {
@@ -145,14 +149,29 @@ export default class Game {
         return false;
     }
 
-    private line (): boolean {
+    private line (): void {
+        let linesRemoved = 0;
+        const lineScores = {
+            1: 40,
+            2: 100,
+            3: 300,
+            4: 1200
+        }
+
         for (let y = 0; y < this.boardMatrix.length; ++y) {
             if (this.boardMatrix[y].every(value => value !== 0)) {
                 this.boardMatrix.splice(y, 1);
                 this.boardMatrix.unshift(new Array(10).fill(0));
+                linesRemoved += 1;
             }
         }
-        return false;
+
+        this.lines += linesRemoved;
+        if (linesRemoved > 0) this.scoreIncrement(lineScores[linesRemoved]);
+    }
+
+    private scoreIncrement (increment: number): void {
+        this.score += increment;
     }
 
     private mergeShapeToBoard (): void {
@@ -174,6 +193,9 @@ export default class Game {
 
         Canvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
 
+        this.scoreElement = document.getElementById("score");
+        this.linesElement = document.getElementById("lines");
+
         this.createBoardMatrix(10, 20);
         this.playerReset();
 
@@ -192,6 +214,9 @@ export default class Game {
         if (this.currentTime > CONFIG.UPDATE_INTERVAL) {
             this.playerDrop()
         }
+
+        this.scoreElement.innerHTML = this.score.toString();
+        this.linesElement.innerHTML = this.lines.toString();
 
         this.draw();
         this.eventHandler.reset();
