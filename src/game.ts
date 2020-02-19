@@ -1,4 +1,4 @@
-import { CONFIG, SHAPES } from './game.config';
+import { CONFIG, SHAPES, COLORS } from './game.config';
 import Canvas from './Canvas';
 import EventHandler from './EventHandler';
 
@@ -13,7 +13,6 @@ export default class Game {
     currentTime: number = 0;
     eventHandler: EventHandler = new EventHandler();
 
-    shape: number[][];
     player: IPlayer = {
         pos: { x: 3, y: 0 }
     };
@@ -37,7 +36,7 @@ export default class Game {
         this.boardMatrix = matrix;
     }
 
-    private drawMatrix (matrix: number[][], offset: {x: number, y: number}): void {
+    private drawMatrix (matrix: number[][] | string[][], offset: {x: number, y: number}): void {
         matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
@@ -45,7 +44,8 @@ export default class Game {
                         (x + offset.x) * CONFIG.TILE_WIDTH,
                         (y + offset.y) * CONFIG.TILE_HEIGHT,
                         CONFIG.TILE_WIDTH,
-                        CONFIG.TILE_HEIGHT
+                        CONFIG.TILE_HEIGHT,
+                        COLORS[value]
                     );
                 }
             });
