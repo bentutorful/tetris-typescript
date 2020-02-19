@@ -1,8 +1,8 @@
 # To Do
 
-* Game over
-* Start menu
 * Show next piece
+* Start menu
+* Game over menu
 * Style pieces and board
 
 ## Next steps
@@ -18,7 +18,7 @@
 * More styling
     * Add grid to board
     * Show where piece will fall
-* Pause button (comes with menu?)
+* Quick pause button
 * Music
     * Mute/Volume
 * Save high scores

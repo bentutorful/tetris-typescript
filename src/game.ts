@@ -1,6 +1,7 @@
 import { CONFIG, SHAPES, COLORS } from './game.config';
 import Canvas from './Canvas';
 import EventHandler from './EventHandler';
+import Matrix from './Matrix';
 
 interface IPlayer {
     pos: { x: number, y: number },
@@ -36,36 +37,11 @@ export default class Game {
         this.player.matrix = SHAPES[next];
     }
 
-    private createBoardMatrix (w, h): void {
-        const matrix = [];
-        while (h--) {
-            matrix.push(new Array(w).fill(0));
-        }
-
-        this.boardMatrix = matrix;
-    }
-
-    private drawMatrix (matrix: number[][] | string[][], offset: {x: number, y: number}): void {
-        matrix.forEach((row, y) => {
-            row.forEach((value, x) => {
-                if (value !== 0) {
-                    Canvas.fillRect(
-                        (x + offset.x) * CONFIG.TILE_WIDTH,
-                        (y + offset.y) * CONFIG.TILE_HEIGHT,
-                        CONFIG.TILE_WIDTH,
-                        CONFIG.TILE_HEIGHT,
-                        COLORS[value]
-                    );
-                }
-            });
-        });
-    }
-
     private draw () {
         Canvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
 
-        this.drawMatrix(this.boardMatrix, { x: 0, y: 0 });
-        this.drawMatrix(this.player.matrix, this.player.pos);
+        Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 });
+        Matrix.drawMatrix(this.player.matrix, this.player.pos);
     }
 
     private playerReset (): void {
@@ -197,7 +173,7 @@ export default class Game {
         this.scoreElement = document.getElementById("score");
         this.linesElement = document.getElementById("lines");
 
-        this.createBoardMatrix(10, 20);
+        this.boardMatrix = Matrix.createBoardMatrix(10, 20);
         this.playerReset();
 
         const startTime = window.performance.now();
