@@ -21,8 +21,14 @@ export default class Game {
 
     private generateRandomShape(): void {
         // TODO: possibly change random algorithm
-        const pieces = ['I','J','L','O','S','T','Z']
-        const next = pieces[Math.floor(Math.random() * (pieces.length - 0)) + 0];
+        const pieces = ['I','I','I','I',
+                        'J','J','J','J',
+                        'L','L','L','L',
+                        'O','O','O','O',
+                        'S','S','S','S',
+                        'T','T','T','T',
+                        'Z','Z','Z','Z',]
+        const next = pieces.splice((Math.random() * (pieces.length - 1)), 1)[0];
 
         this.player.matrix = SHAPES[next];
     }
