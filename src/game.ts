@@ -20,7 +20,6 @@ export default class Game {
 
 
     private generateRandomShape(): void {
-        // TODO: possibly change random algorithm
         const pieces = ['I','I','I','I',
                         'J','J','J','J',
                         'L','L','L','L',
@@ -82,6 +81,9 @@ export default class Game {
         if (this.collide()) {
             this.player.pos.y--;
             this.mergeShapeToBoard();
+            if (this.line()) {
+                console.log('you made a line!');
+            }
             this.playerReset();
         }
         this.currentTime = 0;
@@ -138,6 +140,16 @@ export default class Game {
                 if (m[y][x] !== 0 && (this.boardMatrix[y + o.y] && this.boardMatrix[y + o.y][x + o.x]) !== 0) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private line (): boolean {
+        for (let y = 0; y < this.boardMatrix.length; ++y) {
+            if (this.boardMatrix[y].every(value => value !== 0)) {
+                this.boardMatrix.splice(y, 1);
+                this.boardMatrix.unshift(new Array(10).fill(0));
             }
         }
         return false;

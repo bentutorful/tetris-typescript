@@ -1,7 +1,5 @@
 # TODO
 
-* Colours for pieces
-* Lines
 * Scoring
 * Scoring UI
 * Game over
@@ -25,3 +23,4 @@
     * Mute/Volume
 * Save high scores
     * Show on start menu
+* Delay/animation when clearing lines
