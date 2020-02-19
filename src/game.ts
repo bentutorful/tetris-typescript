@@ -21,6 +21,7 @@ export default class Game {
     boardMatrix: number[][];
     score: number = 0;
     lines: number = 0;
+    paused: boolean = false;
 
     private generateRandomShape(): void {
         const pieces = ['I','I','I','I',
@@ -204,8 +205,6 @@ export default class Game {
     }
 
     private update (tFrame: DOMHighResTimeStamp): void {
-        this.handleInput();
-
         const deltaTime = tFrame - this.lastTime;
         this.lastTime = tFrame;
 
@@ -219,13 +218,25 @@ export default class Game {
         this.linesElement.innerHTML = this.lines.toString();
 
         this.draw();
-        this.eventHandler.reset();
     }
 
     private gameLoop = (tFrame: DOMHighResTimeStamp): void => {
         const stopMain = window.requestAnimationFrame(this.gameLoop);
 
-        this.update(tFrame);
+        if (this.eventHandler.keyPressed(27)) {
+            this.togglePause();
+        }
+
+        if (!this.paused) {
+            this.handleInput();
+            this.update(tFrame);
+        }
+
+        this.eventHandler.reset();
+    }
+
+    public togglePause (): void {
+        this.paused = !this.paused;
     }
 }
 

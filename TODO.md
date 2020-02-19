@@ -1,4 +1,4 @@
-# TODO
+# To Do
 
 * Game over
 * Start menu
@@ -8,6 +8,7 @@
 ## Next steps
 
 * Pause menu
+    * Escape to open
     * Resume
     * Restart
     * How to play
