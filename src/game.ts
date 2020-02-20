@@ -87,7 +87,9 @@ export default class Game {
         if (this.collide()) {
             // TODO currently just clears the board, but will
             // need to end the game
-            this.boardMatrix.forEach((row) => row.fill(0))
+            this.boardMatrix.forEach((row) => row.fill(0));
+            this.score = 0;
+            this.lines = 0;
         }
     }
 
