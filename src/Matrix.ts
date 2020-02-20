@@ -11,11 +11,11 @@ export default class Matrix {
         return matrix;
     }
 
-    public static drawMatrix (matrix: number[][] | string[][], offset: {x: number, y: number}): void {
+    public static drawMatrix (matrix: number[][] | string[][], offset: {x: number, y: number}, canvas: Canvas): void {
         matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
-                    Canvas.fillRect(
+                    canvas.fillRect(
                         (x + offset.x) * CONFIG.TILE_WIDTH,
                         (y + offset.y) * CONFIG.TILE_HEIGHT,
                         CONFIG.TILE_WIDTH,

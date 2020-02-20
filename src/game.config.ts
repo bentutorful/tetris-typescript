@@ -4,6 +4,10 @@ export const CONFIG: any = {
 
     get BOARD_WIDTH() { return this.TILE_WIDTH * 10 },
     get BOARD_HEIGHT() { return this.TILE_HEIGHT * 20 },
+
+    get NEXT_SHAPES_WIDTH() { return this.TILE_WIDTH * 6 },
+    get NEXT_SHAPES_HEIGHT() { return this.TILE_HEIGHT * 10 },
+
     BOARD_BG_COLOR: '#000000',
 
     UPDATE_INTERVAL: 1000,
@@ -17,19 +21,19 @@ export const CONFIG: any = {
 
 export const SHAPES: any = {
     T: [
-        [0, 0, 0],
+        [0, 1, 0],
         [1, 1, 1],
-        [0, 1, 0]
+        [0, 0, 0]
     ],
     L: [
-        [0, 2, 0],
-        [0, 2, 0],
-        [0, 2, 2]
+        [0, 0, 2],
+        [2, 2, 2],
+        [0, 0, 0]
     ],
     J: [
-        [0, 3, 0],
-        [0, 3, 0],
-        [3, 3, 0]
+        [3, 0, 0],
+        [3, 3, 3],
+        [0, 0, 0]
     ],
     O: [
         [4, 4],
@@ -46,10 +50,10 @@ export const SHAPES: any = {
         [0, 0, 0]
     ],
     I: [
-        [0, 7, 0, 0],
-        [0, 7, 0, 0],
-        [0, 7, 0, 0],
-        [0, 7, 0, 0]
+        [0, 0, 0, 0],
+        [7, 7, 7, 7],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
     ]
 }
 

@@ -9,6 +9,8 @@ interface IPlayer {
 }
 
 export default class Game {
+    gameCanvas: Canvas;
+    nextShapesCanvas: Canvas;
     updateInterval: number = CONFIG.UPDATE_INTERVAL;
     lastTime: number = 0;
     currentTime: number = 0;
@@ -45,11 +47,30 @@ export default class Game {
         }
     }
 
-    private draw () {
-        Canvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+    private drawNextShapes (): void {
+        for (let i = 0; i < this.nextShapes.length; ++i) {
+            const shape = SHAPES[this.nextShapes[i]];
 
-        Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 });
-        Matrix.drawMatrix(this.player.matrix, this.player.pos);
+            const shapeWidth = shape[0].length;
+            const posX = (6 / 2) - ((shapeWidth) / 2);
+
+            for (let i = 0; i < shape.length; ++i) {
+
+            }
+            let posY = (3 * (i + 1)) - 2;
+
+            Matrix.drawMatrix(shape, { x: posX, y: posY }, this.nextShapesCanvas);
+        }
+    }
+
+    private draw () {
+        this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+
+        Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 }, this.gameCanvas);
+        Matrix.drawMatrix(this.player.matrix, this.player.pos, this.gameCanvas);
+
+        this.drawNextShapes();
     }
 
     private playerReset (): void {
@@ -176,13 +197,23 @@ export default class Game {
     }
 
     public init (): void {
-        Canvas.init(
+        this.gameCanvas = new Canvas();
+        this.nextShapesCanvas = new Canvas();
+
+        this.gameCanvas.init(
             CONFIG.BOARD_WIDTH,
             CONFIG.BOARD_HEIGHT,
             <HTMLCanvasElement>document.getElementById("gameCanvas")
         );
 
-        Canvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+        this.nextShapesCanvas.init(
+            CONFIG.NEXT_SHAPES_WIDTH,
+            CONFIG.NEXT_SHAPES_HEIGHT,
+            <HTMLCanvasElement>document.getElementById("nextShapesCanvas")
+        );
+
+        this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
 
         this.scoreElement = document.getElementById("score");
         this.linesElement = document.getElementById("lines");

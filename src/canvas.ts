@@ -1,9 +1,9 @@
 export default class Canvas {
-    private static width: number;
-    private static height: number;
-    private static context: CanvasRenderingContext2D;
+    private width: number;
+    private height: number;
+    private context: CanvasRenderingContext2D;
 
-    public static init(width: number, height: number, canvas: HTMLCanvasElement): void {
+    public init(width: number, height: number, canvas: HTMLCanvasElement): void {
         this.width = width;
         this.height = height;
         canvas.width = this.width;
@@ -11,12 +11,12 @@ export default class Canvas {
         this.context = canvas.getContext('2d');
     }
 
-    public static fillCanvas(color: string): void {
+    public fillCanvas(color: string): void {
         this.context.fillStyle = color;
         this.context.fillRect(0, 0, this.width, this.height);
     }
 
-    public static fillRect(x: number, y: number, w: number, h: number, color: string): void {
+    public fillRect(x: number, y: number, w: number, h: number, color: string): void {
         this.context.fillStyle = color;
         this.context.fillRect(x, y, w, h);
     }
