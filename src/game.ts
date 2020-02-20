@@ -23,8 +23,9 @@ export default class Game {
     score: number = 0;
     lines: number = 0;
     paused: boolean = false;
+    nextShapes: string[] = []
 
-    private generateRandomShape(): void {
+    private generateRandomShape (): string {
         const pieces = ['I','I','I','I',
                         'J','J','J','J',
                         'L','L','L','L',
@@ -32,9 +33,16 @@ export default class Game {
                         'S','S','S','S',
                         'T','T','T','T',
                         'Z','Z','Z','Z',]
-        const next = pieces.splice((Math.random() * (pieces.length - 1)), 1)[0];
+        const piece = pieces.splice((Math.random() * (pieces.length - 1)), 1)[0];
 
-        this.player.matrix = SHAPES[next];
+        return piece;
+    }
+
+    private addNextShapes (): void {
+        while (this.nextShapes.length < 3) {
+            const shape: string = this.generateRandomShape();
+            this.nextShapes.push(shape);
+        }
     }
 
     private draw () {
@@ -45,7 +53,13 @@ export default class Game {
     }
 
     private playerReset (): void {
-        this.generateRandomShape();
+        if (this.nextShapes.length === 0) {
+            // is start of game
+            this.addNextShapes();
+        }
+        this.player.matrix = SHAPES[this.nextShapes.shift()];
+        this.addNextShapes();
+
         this.player.pos.x = Math.floor(this.boardMatrix[0].length / 2) -
                             Math.floor(this.player.matrix[0].length / 2);
         this.player.pos.y = 0;
@@ -187,7 +201,7 @@ export default class Game {
         this.currentTime += deltaTime;
 
         if (this.currentTime > CONFIG.UPDATE_INTERVAL) {
-            this.playerDrop()
+            this.playerDrop();
         }
 
         this.scoreElement.innerHTML = this.score.toString();

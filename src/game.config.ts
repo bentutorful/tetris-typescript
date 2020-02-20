@@ -1,6 +1,6 @@
 export const CONFIG: any = {
-    TILE_WIDTH: 40,
-    TILE_HEIGHT: 40,
+    TILE_WIDTH: 30,
+    TILE_HEIGHT: 30,
 
     get BOARD_WIDTH() { return this.TILE_WIDTH * 10 },
     get BOARD_HEIGHT() { return this.TILE_HEIGHT * 20 },
