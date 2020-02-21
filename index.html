@@ -8,21 +8,31 @@
 </head>
 <body>
 
-	<div style="width: 100vw; display: flex; justify-content: space-around;">
-		<canvas id="gameCanvas">
-			<p>Your browser doesn't support canvas.</p>
-		</canvas>
-
-		<div>
-			<div id="scoreWindow">
-				<p>Score</p>
-				<span id="score"></span>
-				<p>Lines</p>
-				<span id="lines"></span>
+	<div class="gameContainer">
+		<div class="scoreWindowContainer gridItem">
+			<div class="scoreWindow">
+				<div class="score">
+					<p>SCORE</p>
+					<span class="scoreValue" id="score"></span>
+				</div>
+				<div class="lines">
+					<p>LINES</p>
+					<span class="linesValue" id="lines"></span>
+				</div>
 			</div>
+		</div>
 
-			<h2>Next</h2>
-			<canvas id="nextShapesCanvas"></canvas>
+		<div class="gameCanvasContainer gridItem">
+			<canvas id="gameCanvas">
+				<p>Your browser doesn't support canvas.</p>
+			</canvas>
+		</div>
+
+		<div class="nextShapesContainer gridItem">
+			<div>
+				<h2>Next</h2>
+				<canvas id="nextShapesCanvas"></canvas>
+			</div>
 		</div>
 	</div>
 
