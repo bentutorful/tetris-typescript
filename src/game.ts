@@ -66,29 +66,15 @@ export default class Game {
     private drawBoard () {
         for (let x = 0; x < CONFIG.BOARD_TILE_WIDTH; ++x) {
             for (let y = 0; y < CONFIG.BOARD_TILE_HEIGHT; ++y) {
-                this.gameCanvas.fillRect(
+                this.gameCanvas.fillRoundedRect(
                     x * CONFIG.TILE_WIDTH,
                     y * CONFIG.TILE_HEIGHT,
-                    CONFIG.TILE_WIDTH,
-                    CONFIG.TILE_HEIGHT,
-                    CONFIG.BOARD_BG_COLOR
-                );
-                this.gameCanvas.strokeRect(
-                    x * CONFIG.TILE_WIDTH,
-                    y * CONFIG.TILE_HEIGHT,
-                    CONFIG.TILE_WIDTH,
-                    CONFIG.TILE_HEIGHT,
-                    1,
-                    '#9c9c9c'
-                );
-                // TODO figure how to render another row/column of circles
-                this.gameCanvas.arc(
-                    x * CONFIG.TILE_WIDTH,
-                    y * CONFIG.TILE_HEIGHT,
-                    2,
-                    0,
-                    Math.PI * 2,
-                    '#9c9c9c'
+                    CONFIG.TILE_WIDTH - 1.5,
+                    CONFIG.TILE_HEIGHT - 1.5,
+                    3,
+                    CONFIG.BOARD_BG_COLOR,
+                    CONFIG.BOARD_STROKE_COLOR,
+                    3
                 );
             }
         }

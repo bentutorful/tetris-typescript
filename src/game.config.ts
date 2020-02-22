@@ -11,8 +11,8 @@ export const CONFIG: any = {
     get NEXT_SHAPES_WIDTH() { return this.TILE_WIDTH * 6 },
     get NEXT_SHAPES_HEIGHT() { return this.TILE_HEIGHT * 10 },
 
-    BOARD_BG_COLOR: '#2b2b2b',
-    BOARD_STROKE_COLOR: '#9c9c9c',
+    BOARD_BG_COLOR: '#4e4e4e',
+    BOARD_STROKE_COLOR: '#2b2b2b',
 
     UPDATE_INTERVAL: 1000,
 
@@ -62,11 +62,11 @@ export const SHAPES: any = {
 }
 
 export const COLORS: any = {
-    1: 'purple',
-    2: 'orange',
-    3: 'blue',
-    4: 'yellow',
-    5: 'green',
-    6: 'red',
-    7: 'cyan'
+    1: '#ee82ee', // purple
+    2: '#eb8b23', // orange
+    3: '#1e90ff', // blue
+    4: '#ffc63e', // yellow
+    5: '#59cb86', // green
+    6: '#dc6555', // red
+    7: '#23e3eb' // cyan
 }

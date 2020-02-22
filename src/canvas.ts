@@ -21,7 +21,7 @@ export default class Canvas {
         this.context.fillRect(x, y, w, h);
     }
 
-    public fillRoundedRect(x: number, y: number, w: number, h: number, r: number, color: string): void {
+    public fillRoundedRect(x: number, y: number, w: number, h: number, r: number, color: string,strokeColor?: string, strokeWidth?: number): void {
         this.context.fillStyle = color;
         const deg = Math.PI/180;
 
@@ -42,6 +42,11 @@ export default class Canvas {
 
         this.context.closePath();
 
+        if (strokeWidth && strokeColor) {
+            this.context.strokeStyle = strokeColor;
+            this.context.lineWidth = strokeWidth;
+            this.context.stroke();
+        }
         this.context.fill();
     }
 

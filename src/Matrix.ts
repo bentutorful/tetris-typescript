@@ -16,25 +16,13 @@ export default class Matrix {
             row.forEach((value, x) => {
                 if (value !== 0) {
                     canvas.fillRoundedRect(
-                        (x + offset.x) * CONFIG.TILE_WIDTH + 2,
-                        (y + offset.y) * CONFIG.TILE_HEIGHT + 2,
-                        CONFIG.TILE_WIDTH - 4,
-                        CONFIG.TILE_HEIGHT - 4,
-                        5,
+                        (x + offset.x) * CONFIG.TILE_WIDTH,
+                        (y + offset.y) * CONFIG.TILE_HEIGHT,
+                        CONFIG.TILE_WIDTH - 2,
+                        CONFIG.TILE_HEIGHT - 2,
+                        3,
                         COLORS[value]
                     );
-                    // TODO how to create inner shadow?
-                    // canvas.shadow('#000000', 3, -1, -1);
-                    // canvas.setGlobalCompositeOperation('source-atop')
-                    // canvas.strokeRect(
-                    //     (x + offset.x) * CONFIG.TILE_WIDTH + 2,
-                    //     (y + offset.y) * CONFIG.TILE_HEIGHT + 2,
-                    //     CONFIG.TILE_WIDTH - 4,
-                    //     CONFIG.TILE_HEIGHT - 4,
-                    //     0,
-                    //     '#000'
-                    // );
-                    // canvas.setGlobalCompositeOperation('source-over');
                 }
             });
         });
