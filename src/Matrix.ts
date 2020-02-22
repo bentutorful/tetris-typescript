@@ -15,11 +15,12 @@ export default class Matrix {
         matrix.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
-                    canvas.fillRect(
+                    canvas.fillRoundedRect(
                         (x + offset.x) * CONFIG.TILE_WIDTH + 2,
                         (y + offset.y) * CONFIG.TILE_HEIGHT + 2,
                         CONFIG.TILE_WIDTH - 4,
                         CONFIG.TILE_HEIGHT - 4,
+                        5,
                         COLORS[value]
                     );
                     // TODO how to create inner shadow?

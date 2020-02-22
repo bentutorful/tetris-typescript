@@ -21,6 +21,30 @@ export default class Canvas {
         this.context.fillRect(x, y, w, h);
     }
 
+    public fillRoundedRect(x: number, y: number, w: number, h: number, r: number, color: string): void {
+        this.context.fillStyle = color;
+        const deg = Math.PI/180;
+
+        this.context.beginPath();
+
+        this.context.moveTo(x + r, y);
+        this.context.lineTo(x + w - r, y);
+        this.context.arc(x + w - r, y + r, r, deg*270, deg*0);
+
+        this.context.lineTo(x + w, y + h - r);
+        this.context.arc(x + w - r, y + h - r, r, deg*0, deg*90);
+
+        this.context.lineTo(x + r, y + h);
+        this.context.arc(x + r, y + h - r, r, deg*90, deg*180);
+
+        this.context.lineTo(x, y + r);
+        this.context.arc(x + r, y + r, r, deg*180, deg*270);
+
+        this.context.closePath();
+
+        this.context.fill();
+    }
+
     public strokeRect(x: number, y: number, w: number, h: number, strokeWidth: number, color: string): void {
         this.context.strokeStyle = color;
         this.context.lineWidth = strokeWidth;
