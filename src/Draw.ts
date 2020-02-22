@@ -21,6 +21,8 @@ export default class Draw {
     }
 
     public static nextShapes (canvas: Canvas, nextShapes: string[]): void {
+        canvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+
         for (let i = 0; i < nextShapes.length; ++i) {
             const shape = SHAPES[nextShapes[i]];
 
@@ -28,6 +30,7 @@ export default class Draw {
             const posX = (6 / 2) - ((shapeWidth) / 2);
 
             // TODO make I shape centered
+
             const posY = (3 * (i + 1)) - 2;
 
             Matrix.drawMatrix(shape, { x: posX, y: posY }, canvas);

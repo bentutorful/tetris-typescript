@@ -102,7 +102,7 @@ export default class Canvas {
         this.context.shadowOffsetY = offsetY;
     }
 
-    public setGlobalCompositeOperation (value: string) {
-        this.context.globalCompositeOperation = value;
+    public setOpacity (opacity: number) {
+        this.context.globalAlpha = opacity;
     }
 }

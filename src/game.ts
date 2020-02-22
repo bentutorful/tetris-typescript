@@ -7,6 +7,7 @@ import Draw from './Draw';
 import generateRandomShape from './helpers';
 
 export default class Game {
+    stopMain: DOMHighResTimeStamp;
     gameCanvas: Canvas;
     nextShapesCanvas: Canvas;
     updateInterval: number = CONFIG.UPDATE_INTERVAL;
@@ -20,7 +21,8 @@ export default class Game {
     score: number = 0;
     lines: number = 0;
     paused: boolean = false;
-    nextShapes: string[] = []
+    nextShapes: string[] = [];
+    gameOver: boolean = false;
 
     private addNextShapes (): void {
         while (this.nextShapes.length < 3) {
@@ -37,24 +39,12 @@ export default class Game {
     }
 
     private playerReset (): void {
-        this.player = new Player();
+        this.player = new Player(SHAPES[this.nextShapes.shift()]);
 
-        if (this.nextShapes.length === 0) {
-            // is start of game
-            this.addNextShapes();
-        }
-        this.player.matrix = SHAPES[this.nextShapes.shift()];
         this.addNextShapes();
 
-        this.player.pos.x = Math.floor(this.boardMatrix[0].length / 2)
-                            - Math.floor(this.player.matrix[0].length / 2);
-        this.player.pos.y = 0;
         if (this.collide()) {
-            // TODO currently just clears the board, but will
-            // need to end the game
-            this.boardMatrix.forEach((row) => row.fill(0));
-            this.score = 0;
-            this.lines = 0;
+            this.gameIsOver();
         }
     }
 
@@ -149,6 +139,33 @@ export default class Game {
         });
     }
 
+    private gameIsOver (): void {
+        this.gameCanvas.setOpacity(0.7);
+        this.gameCanvas.fillRect(
+            0,
+            0,
+            CONFIG.BOARD_WIDTH,
+            CONFIG.BOARD_HEIGHT,
+            '#000'
+        );
+        this.gameCanvas.setOpacity(1);
+        this.gameOver = true;
+
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const gameOverScore = document.getElementById('gameOverScore');
+        const gameOverLines = document.getElementById('gameOverLines');
+        const newGameButton = document.getElementById('newGameButton');
+        gameOverScreen.style.display = 'flex';
+        gameOverScore.innerHTML = this.score.toString();
+        gameOverLines.innerHTML = this.lines.toString();
+        newGameButton.addEventListener('click', () => {
+            this.newGame();
+            gameOverScreen.style.display = 'none';
+        });
+
+        window.cancelAnimationFrame(this.stopMain);
+    }
+
     public init (): void {
         this.gameCanvas = new Canvas();
         this.nextShapesCanvas = new Canvas();
@@ -166,12 +183,21 @@ export default class Game {
         );
 
         this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
-        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+
+        this.boardMatrix = Matrix.createBoardMatrix(10, 20);
+        this.newGame();
+    }
+
+    private newGame (): void {
+        this.gameOver = false;
 
         this.scoreElement = document.getElementById('score');
         this.linesElement = document.getElementById('lines');
 
-        this.boardMatrix = Matrix.createBoardMatrix(10, 20);
+        this.boardMatrix.forEach((row) => row.fill(0));
+        this.addNextShapes();
+        this.score = 0;
+        this.lines = 0;
         this.playerReset();
 
         const startTime = window.performance.now();
@@ -191,14 +217,16 @@ export default class Game {
         this.scoreElement.innerHTML = this.score.toString();
         this.linesElement.innerHTML = this.lines.toString();
 
-        this.draw();
+        if (!this.gameOver) {
+            this.draw();
+        }
     }
 
     private gameLoop = (tFrame: DOMHighResTimeStamp): void => {
-        const stopMain = window.requestAnimationFrame(this.gameLoop);
+        this.stopMain = window.requestAnimationFrame(this.gameLoop);
 
         if (this.eventHandler.keyPressed(27)) {
-            this.togglePause();
+            this.paused = !this.paused;
         }
 
         if (!this.paused) {
@@ -207,10 +235,6 @@ export default class Game {
         }
 
         this.eventHandler.reset();
-    }
-
-    public togglePause (): void {
-        this.paused = !this.paused;
     }
 }
 

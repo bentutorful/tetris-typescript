@@ -1,11 +1,26 @@
+import { CONFIG } from './game.config';
+
 interface IPos {
     x: number;
     y: number;
 }
 
 export default class Player {
-    pos: IPos = { x: 0, y: 0 }
-    matrix: number[][];
+    public pos: IPos = { x: 0, y: 0 }
+    public matrix: number[][];
+
+    constructor (shape: number[][]) {
+        this.matrix = shape;
+        this.pos = {
+            x: Math.floor(CONFIG.BOARD_TILE_WIDTH / 2)
+                - Math.floor(this.matrix[0].length / 2),
+            y: 0
+        };
+    }
+
+    public setMatrix (matrix: number[][]) {
+        this.matrix = matrix;
+    }
 
     public move (dir: number) {
         this.pos.x += dir;
