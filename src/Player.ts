@@ -11,7 +11,7 @@ export default class Player {
         this.pos.x += dir;
     }
 
-    public drop (softDrop?: boolean): void {
+    public drop (): void {
         this.pos.y++;
     }
 

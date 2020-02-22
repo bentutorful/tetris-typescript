@@ -5,11 +5,11 @@ export const CONFIG: any = {
     BOARD_TILE_WIDTH: 10,
     BOARD_TILE_HEIGHT: 20,
 
-    get BOARD_WIDTH() { return this.TILE_WIDTH * this.BOARD_TILE_WIDTH },
-    get BOARD_HEIGHT() { return this.TILE_HEIGHT * this.BOARD_TILE_HEIGHT },
+    get BOARD_WIDTH () { return this.TILE_WIDTH * this.BOARD_TILE_WIDTH; },
+    get BOARD_HEIGHT () { return this.TILE_HEIGHT * this.BOARD_TILE_HEIGHT; },
 
-    get NEXT_SHAPES_WIDTH() { return this.TILE_WIDTH * 6 },
-    get NEXT_SHAPES_HEIGHT() { return this.TILE_HEIGHT * 10 },
+    get NEXT_SHAPES_WIDTH () { return this.TILE_WIDTH * 6; },
+    get NEXT_SHAPES_HEIGHT () { return this.TILE_HEIGHT * 10; },
 
     BOARD_BG_COLOR: '#4e4e4e',
     BOARD_STROKE_COLOR: '#2b2b2b',
@@ -21,7 +21,7 @@ export const CONFIG: any = {
     DOWN_KEY: 40,
     LEFT_KEY: 37,
     RIGHT_KEY: 39,
-}
+};
 
 export const SHAPES: any = {
     T: [
@@ -59,7 +59,7 @@ export const SHAPES: any = {
         [0, 0, 0, 0],
         [0, 0, 0, 0]
     ]
-}
+};
 
 export const COLORS: any = {
     1: '#ee82ee', // purple
@@ -69,4 +69,4 @@ export const COLORS: any = {
     5: '#59cb86', // green
     6: '#dc6555', // red
     7: '#23e3eb' // cyan
-}
+};

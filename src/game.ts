@@ -1,8 +1,10 @@
-import { CONFIG, SHAPES, COLORS } from './game.config';
+import { CONFIG, SHAPES } from './game.config';
 import Canvas from './Canvas';
 import EventHandler from './EventHandler';
 import Matrix from './Matrix';
 import Player from './Player';
+import Draw from './Draw';
+import generateRandomShape from './helpers';
 
 export default class Game {
     gameCanvas: Canvas;
@@ -13,7 +15,6 @@ export default class Game {
     eventHandler: EventHandler = new EventHandler();
     scoreElement: HTMLSpanElement;
     linesElement: HTMLSpanElement;
-
     player: Player;
     boardMatrix: number[][];
     score: number = 0;
@@ -21,69 +22,18 @@ export default class Game {
     paused: boolean = false;
     nextShapes: string[] = []
 
-    private generateRandomShape (): string {
-        const pieces = ['I','I','I','I',
-                        'J','J','J','J',
-                        'L','L','L','L',
-                        'O','O','O','O',
-                        'S','S','S','S',
-                        'T','T','T','T',
-                        'Z','Z','Z','Z',]
-        const piece = pieces.splice((Math.random() * (pieces.length - 1)), 1)[0];
-
-        return piece;
-    }
-
     private addNextShapes (): void {
         while (this.nextShapes.length < 3) {
-            const shape: string = this.generateRandomShape();
+            const shape: string = generateRandomShape();
             this.nextShapes.push(shape);
         }
     }
 
-    private drawNextShapes (): void {
-        for (let i = 0; i < this.nextShapes.length; ++i) {
-            const shape = SHAPES[this.nextShapes[i]];
-
-            const shapeWidth = shape[0].length;
-            const posX = (6 / 2) - ((shapeWidth) / 2);
-
-            for (let i = 0; i < shape.length; ++i) {
-
-            }
-            let posY = (3 * (i + 1)) - 2;
-
-            Matrix.drawMatrix(shape, { x: posX, y: posY }, this.nextShapesCanvas);
-        }
-    }
-
-    private drawBoard () {
-        for (let x = 0; x < CONFIG.BOARD_TILE_WIDTH; ++x) {
-            for (let y = 0; y < CONFIG.BOARD_TILE_HEIGHT; ++y) {
-                this.gameCanvas.fillRoundedRect(
-                    x * CONFIG.TILE_WIDTH,
-                    y * CONFIG.TILE_HEIGHT,
-                    CONFIG.TILE_WIDTH - 1.5,
-                    CONFIG.TILE_HEIGHT - 1.5,
-                    3,
-                    CONFIG.BOARD_BG_COLOR,
-                    CONFIG.BOARD_STROKE_COLOR,
-                    3
-                );
-            }
-        }
-    }
-
-    private drawMatrices (): void {
+    private draw () {
+        Draw.board(this.gameCanvas);
         Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 }, this.gameCanvas);
         Matrix.drawMatrix(this.player.matrix, this.player.pos, this.gameCanvas);
-        this.drawNextShapes();
-    }
-
-    private draw () {
-        this.drawBoard();
-        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
-        this.drawMatrices();
+        Draw.nextShapes(this.nextShapesCanvas, this.nextShapes);
     }
 
     private playerReset (): void {
@@ -96,8 +46,8 @@ export default class Game {
         this.player.matrix = SHAPES[this.nextShapes.shift()];
         this.addNextShapes();
 
-        this.player.pos.x = Math.floor(this.boardMatrix[0].length / 2) -
-                            Math.floor(this.player.matrix[0].length / 2);
+        this.player.pos.x = Math.floor(this.boardMatrix[0].length / 2)
+                            - Math.floor(this.player.matrix[0].length / 2);
         this.player.pos.y = 0;
         if (this.collide()) {
             // TODO currently just clears the board, but will
@@ -154,7 +104,9 @@ export default class Game {
         const [m, o] = [this.player.matrix, this.player.pos];
         for (let y = 0; y < m.length; ++y) {
             for (let x = 0; x < m[y].length; ++x) {
-                if (m[y][x] !== 0 && (this.boardMatrix[y + o.y] && this.boardMatrix[y + o.y][x + o.x]) !== 0) {
+                if (m[y][x] !== 0
+                    && (this.boardMatrix[y + o.y]
+                    && this.boardMatrix[y + o.y][x + o.x]) !== 0) {
                     return true;
                 }
             }
@@ -169,10 +121,10 @@ export default class Game {
             2: 100,
             3: 300,
             4: 1200
-        }
+        };
 
         for (let y = 0; y < this.boardMatrix.length; ++y) {
-            if (this.boardMatrix[y].every(value => value !== 0)) {
+            if (this.boardMatrix[y].every((value) => value !== 0)) {
                 this.boardMatrix.splice(y, 1);
                 this.boardMatrix.unshift(new Array(10).fill(0));
                 linesRemoved += 1;
@@ -193,8 +145,8 @@ export default class Game {
                 if (value !== 0) {
                     this.boardMatrix[y + this.player.pos.y][x + this.player.pos.x] = value;
                 }
-            })
-        })
+            });
+        });
     }
 
     public init (): void {
@@ -204,20 +156,20 @@ export default class Game {
         this.gameCanvas.init(
             CONFIG.BOARD_WIDTH,
             CONFIG.BOARD_HEIGHT,
-            <HTMLCanvasElement>document.getElementById("gameCanvas")
+            <HTMLCanvasElement>document.getElementById('gameCanvas')
         );
 
         this.nextShapesCanvas.init(
             CONFIG.NEXT_SHAPES_WIDTH,
             CONFIG.NEXT_SHAPES_HEIGHT,
-            <HTMLCanvasElement>document.getElementById("nextShapesCanvas")
+            <HTMLCanvasElement>document.getElementById('nextShapesCanvas')
         );
 
         this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
         this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
 
-        this.scoreElement = document.getElementById("score");
-        this.linesElement = document.getElementById("lines");
+        this.scoreElement = document.getElementById('score');
+        this.linesElement = document.getElementById('lines');
 
         this.boardMatrix = Matrix.createBoardMatrix(10, 20);
         this.playerReset();
@@ -262,7 +214,7 @@ export default class Game {
     }
 }
 
-;(() => {
+(() => {
     const game: Game = new Game();
 
     game.init();
