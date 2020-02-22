@@ -2,11 +2,7 @@ import { CONFIG, SHAPES, COLORS } from './game.config';
 import Canvas from './Canvas';
 import EventHandler from './EventHandler';
 import Matrix from './Matrix';
-
-interface IPlayer {
-    pos: { x: number, y: number },
-    matrix?: number[][]
-}
+import Player from './Player';
 
 export default class Game {
     gameCanvas: Canvas;
@@ -18,9 +14,7 @@ export default class Game {
     scoreElement: HTMLSpanElement;
     linesElement: HTMLSpanElement;
 
-    player: IPlayer = {
-        pos: { x: 3, y: 0 }
-    };
+    player: Player;
     boardMatrix: number[][];
     score: number = 0;
     lines: number = 0;
@@ -83,16 +77,18 @@ export default class Game {
     private drawMatrices (): void {
         Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 }, this.gameCanvas);
         Matrix.drawMatrix(this.player.matrix, this.player.pos, this.gameCanvas);
+        this.drawNextShapes();
     }
 
     private draw () {
         this.drawBoard();
         this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
         this.drawMatrices();
-        this.drawNextShapes();
     }
 
     private playerReset (): void {
+        this.player = new Player();
+
         if (this.nextShapes.length === 0) {
             // is start of game
             this.addNextShapes();
@@ -113,12 +109,12 @@ export default class Game {
     }
 
     private playerDrop (softDrop?: boolean): void {
-        this.player.pos.y++
+        this.player.drop();
         if (softDrop && !this.collide()) {
             this.scoreIncrement(1);
         }
         if (this.collide()) {
-            this.player.pos.y--;
+            this.player.up();
             this.mergeShapeToBoard();
             this.line();
             this.playerReset();
@@ -127,31 +123,15 @@ export default class Game {
     }
 
     private playerMove (dir: number): void {
-        this.player.pos.x += dir;
+        this.player.move(dir);
         if (this.collide()) {
-            this.player.pos.x -= dir;
+            this.player.move(-dir);
         }
-    }
-
-    private rotate () {
-        for (let y = 0; y < this.player.matrix.length; ++y) {
-            for (let x = 0; x < y; ++x) {
-                [
-                    this.player.matrix[x][y],
-                    this.player.matrix[y][x]
-                ] = [
-                    this.player.matrix[y][x],
-                    this.player.matrix[x][y]
-                ];
-            }
-        }
-
-        this.player.matrix.forEach((row) => row.reverse());
     }
 
     private rotatePlayer () {
         let offset = 1;
-        this.rotate();
+        this.player.rotate();
         while (this.collide()) {
             this.player.pos.x += offset;
             offset = -(offset + (offset > 0 ? 1 : -1));
