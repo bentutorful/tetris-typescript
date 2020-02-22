@@ -20,4 +20,30 @@ export default class Canvas {
         this.context.fillStyle = color;
         this.context.fillRect(x, y, w, h);
     }
+
+    public strokeRect(x: number, y: number, w: number, h: number, strokeWidth: number, color: string): void {
+        this.context.strokeStyle = color;
+        this.context.lineWidth = strokeWidth;
+        this.context.strokeRect(x, y, w, h);
+    }
+
+    public arc(x: number,  y: number, r: number, sAngle: number, eAngle: number, color: string): void {
+        this.context.fillStyle = color;
+        this.context.strokeStyle = color;
+        this.context.beginPath();
+        this.context.arc(x, y, r, sAngle, eAngle);
+        this.context.closePath();
+        this.context.fill();
+    }
+
+    public shadow(color: string, blur: number, offsetX: number, offsetY: number): void {
+        this.context.shadowColor = color;
+        this.context.shadowBlur = blur;
+        this.context.shadowOffsetX = offsetX;
+        this.context.shadowOffsetY = offsetY;
+    }
+
+    public setGlobalCompositeOperation(value: string) {
+        this.context.globalCompositeOperation = value;
+    }
 }

@@ -63,13 +63,46 @@ export default class Game {
         }
     }
 
-    private draw () {
-        this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
-        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+    private drawBoard () {
+        for (let x = 0; x < CONFIG.BOARD_TILE_WIDTH; ++x) {
+            for (let y = 0; y < CONFIG.BOARD_TILE_HEIGHT; ++y) {
+                this.gameCanvas.fillRect(
+                    x * CONFIG.TILE_WIDTH,
+                    y * CONFIG.TILE_HEIGHT,
+                    CONFIG.TILE_WIDTH,
+                    CONFIG.TILE_HEIGHT,
+                    CONFIG.BOARD_BG_COLOR
+                );
+                this.gameCanvas.strokeRect(
+                    x * CONFIG.TILE_WIDTH,
+                    y * CONFIG.TILE_HEIGHT,
+                    CONFIG.TILE_WIDTH,
+                    CONFIG.TILE_HEIGHT,
+                    1,
+                    '#9c9c9c'
+                );
+                // TODO figure how to render another row/column of circles
+                this.gameCanvas.arc(
+                    x * CONFIG.TILE_WIDTH,
+                    y * CONFIG.TILE_HEIGHT,
+                    2,
+                    0,
+                    Math.PI * 2,
+                    '#9c9c9c'
+                );
+            }
+        }
+    }
 
+    private drawMatrices (): void {
         Matrix.drawMatrix(this.boardMatrix, { x: 0, y: 0 }, this.gameCanvas);
         Matrix.drawMatrix(this.player.matrix, this.player.pos, this.gameCanvas);
+    }
 
+    private draw () {
+        this.drawBoard();
+        this.nextShapesCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
+        this.drawMatrices();
         this.drawNextShapes();
     }
 

@@ -24,7 +24,7 @@ body {
     align-items: flex-start;
 }
 
-.scoreWindow, .gameCanvas, .nextShapes {
+.scoreWindow, .nextShapes {
     border-radius: 10px;
     background: rgb(105,105,105);
     background: linear-gradient(180deg, rgba(105,105,105,1) 0%, rgba(176,176,176,1) 100%);
@@ -77,6 +77,10 @@ body {
 
 .gameCanvas {
     padding: 10px;
+    background-color: #9c9c9c;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
 }
 
 /* right column */

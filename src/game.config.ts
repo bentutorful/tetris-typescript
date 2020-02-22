@@ -2,13 +2,17 @@ export const CONFIG: any = {
     TILE_WIDTH: 30,
     TILE_HEIGHT: 30,
 
-    get BOARD_WIDTH() { return this.TILE_WIDTH * 10 },
-    get BOARD_HEIGHT() { return this.TILE_HEIGHT * 20 },
+    BOARD_TILE_WIDTH: 10,
+    BOARD_TILE_HEIGHT: 20,
+
+    get BOARD_WIDTH() { return this.TILE_WIDTH * this.BOARD_TILE_WIDTH },
+    get BOARD_HEIGHT() { return this.TILE_HEIGHT * this.BOARD_TILE_HEIGHT },
 
     get NEXT_SHAPES_WIDTH() { return this.TILE_WIDTH * 6 },
     get NEXT_SHAPES_HEIGHT() { return this.TILE_HEIGHT * 10 },
 
-    BOARD_BG_COLOR: '#000000',
+    BOARD_BG_COLOR: '#2b2b2b',
+    BOARD_STROKE_COLOR: '#9c9c9c',
 
     UPDATE_INTERVAL: 1000,
 
