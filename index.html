@@ -13,11 +13,11 @@
 			<div class="scoreWindow">
 				<div class="score">
 					<p>SCORE</p>
-					<span class="scoreValue" id="score"></span>
+					<span class="scoreValue" id="score">0</span>
 				</div>
 				<div class="lines">
 					<p>LINES</p>
-					<span class="linesValue" id="lines"></span>
+					<span class="linesValue" id="lines">0</span>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,16 @@
 		<div class="gameCanvasContainer gridItem">
 			<canvas class="gameCanvas" id="gameCanvas">
 				<p>Your browser doesn't support canvas.</p>
-			</canvas>
+            </canvas>
+
+            <div id="mainMenuScreen" class="mainMenuScreen">
+                <p>TETRIS</p>
+                <span>&#8593; Rotate</span>
+                <span>&#8592; Left</span>
+                <span>&#8594; Right</span>
+                <span>&#8595; Drop</span>
+                <div class="newGameButton" id="mainMenuNewGame">New Game</div>
+            </div>
 
 			<div id="gameOverScreen" class="gameOverScreen">
 				<p>GAME OVER</p>
@@ -39,7 +48,7 @@
 						Lines
 					</div>
 				</div>
-                <div class="newGameButton" id="newGameButton">New Game</div>
+                <div class="newGameButton" id="gameOverNewGame">New Game</div>
                 <div class="mainMenuButton" id="mainMenuButton">Main Menu</div>
 			</div>
 		</div>

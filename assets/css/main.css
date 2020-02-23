@@ -110,16 +110,41 @@ body {
     text-shadow: 1px 1px black;
 }
 
-/* game over */
-
+.mainMenuScreen,
 .gameOverScreen {
-    display: none;
     position: absolute;
     color: #fff;
     height: 100%;
     text-align: center;
     flex-direction: column;
     justify-content: center;
+    width: 220px;
+}
+
+/* main menu */
+
+.mainMenuScreen {
+    display: flex;
+    font-size: 24px;
+}
+.mainMenuScreen p {
+    font-size: 56px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.mainMenuScreen span {
+    margin: 5px 0;
+}
+
+.mainMenuScreen .newGameButton {
+    margin-top: 20px;
+}
+
+/* game over */
+
+.gameOverScreen {
+    display: none;
 }
 
 .gameOverScreen p {

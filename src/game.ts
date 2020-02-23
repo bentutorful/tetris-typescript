@@ -20,9 +20,8 @@ export default class Game {
     boardMatrix: number[][];
     score: number = 0;
     lines: number = 0;
-    paused: boolean = false;
+    running: boolean = false;
     nextShapes: string[] = [];
-    gameOver: boolean = false;
 
     private addNextShapes (): void {
         while (this.nextShapes.length < 3) {
@@ -140,6 +139,8 @@ export default class Game {
     }
 
     private gameIsOver (): void {
+        this.running = false;
+
         this.gameCanvas.setOpacity(0.7);
         this.gameCanvas.fillRect(
             0,
@@ -149,21 +150,46 @@ export default class Game {
             '#000'
         );
         this.gameCanvas.setOpacity(1);
-        this.gameOver = true;
 
         const gameOverScreen = document.getElementById('gameOverScreen');
         const gameOverScore = document.getElementById('gameOverScore');
         const gameOverLines = document.getElementById('gameOverLines');
-        const newGameButton = document.getElementById('newGameButton');
+        const newGameButton = document.getElementById('gameOverNewGame');
+        const mainMenuButton = document.getElementById('mainMenuButton');
         gameOverScreen.style.display = 'flex';
         gameOverScore.innerHTML = this.score.toString();
         gameOverLines.innerHTML = this.lines.toString();
+
         newGameButton.addEventListener('click', () => {
             this.newGame();
             gameOverScreen.style.display = 'none';
         });
 
-        window.cancelAnimationFrame(this.stopMain);
+        mainMenuButton.addEventListener('click', () => {
+            this.mainMenu();
+            gameOverScreen.style.display = 'none';
+        });
+    }
+
+    public mainMenu (): void {
+        const mainMenuScreen = document.getElementById('mainMenuScreen');
+        const newGameButton = document.getElementById('mainMenuNewGame');
+        mainMenuScreen.style.display = 'flex';
+
+        this.gameCanvas.setOpacity(0.7);
+        this.gameCanvas.fillRect(
+            0,
+            0,
+            CONFIG.BOARD_WIDTH,
+            CONFIG.BOARD_HEIGHT,
+            '#000'
+        );
+        this.gameCanvas.setOpacity(1);
+
+        newGameButton.addEventListener('click', () => {
+            this.newGame();
+            mainMenuScreen.style.display = 'none';
+        });
     }
 
     public init (): void {
@@ -185,12 +211,13 @@ export default class Game {
         this.gameCanvas.fillCanvas(CONFIG.BOARD_BG_COLOR);
 
         this.boardMatrix = Matrix.createBoardMatrix(10, 20);
-        this.newGame();
+
+        const startTime = window.performance.now();
+        this.gameLoop(startTime);
     }
 
-    private newGame (): void {
-        this.gameOver = false;
 
+    private newGame (): void {
         this.scoreElement = document.getElementById('score');
         this.linesElement = document.getElementById('lines');
 
@@ -200,8 +227,7 @@ export default class Game {
         this.lines = 0;
         this.playerReset();
 
-        const startTime = window.performance.now();
-        this.gameLoop(startTime);
+        this.running = true;
     }
 
     private update (tFrame: DOMHighResTimeStamp): void {
@@ -217,7 +243,7 @@ export default class Game {
         this.scoreElement.innerHTML = this.score.toString();
         this.linesElement.innerHTML = this.lines.toString();
 
-        if (!this.gameOver) {
+        if (this.running) {
             this.draw();
         }
     }
@@ -226,10 +252,10 @@ export default class Game {
         this.stopMain = window.requestAnimationFrame(this.gameLoop);
 
         if (this.eventHandler.keyPressed(27)) {
-            this.paused = !this.paused;
+            this.running = !this.running;
         }
 
-        if (!this.paused) {
+        if (this.running) {
             this.handleInput();
             this.update(tFrame);
         }
@@ -242,4 +268,5 @@ export default class Game {
     const game: Game = new Game();
 
     game.init();
+    game.mainMenu();
 })();
