@@ -44,7 +44,13 @@ export default class Game {
     }
 
     private playerReset (): void {
-        this.player = new Player(SHAPES[this.nextShapes.shift()]);
+        const newShapeMatrix = SHAPES[this.nextShapes.shift()];
+        const newShape = [];
+        for (let i = 0; i < newShapeMatrix.length; ++i) {
+            newShape[i] = [...newShapeMatrix[i]];
+        }
+
+        this.player = new Player(newShape);
 
         this.addNextShapes();
 
