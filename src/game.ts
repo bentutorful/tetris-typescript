@@ -4,7 +4,6 @@ import EventHandler from './EventHandler';
 import Matrix from './Matrix';
 import Player from './Player';
 import Draw from './Draw';
-import generateRandomShape from './helpers';
 
 export default class Game {
     stopMain: DOMHighResTimeStamp;
@@ -22,10 +21,17 @@ export default class Game {
     lines: number = 0;
     running: boolean = false;
     nextShapes: string[] = [];
+    bag: string[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
     private addNextShapes (): void {
+        if (this.bag.length === 0) {
+            this.bag = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+        }
         while (this.nextShapes.length < 3) {
-            const shape: string = generateRandomShape();
+            const shape: string = this.bag.splice(
+                (Math.floor(Math.random() * this.bag.length)),
+                1
+            )[0];
             this.nextShapes.push(shape);
         }
     }
