@@ -4,6 +4,8 @@ export default class Canvas {
     private context: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
 
+    constructor () {}
+
     public init (width: number, height: number, canvas: HTMLCanvasElement): void {
         this.width = width;
         this.height = height;
