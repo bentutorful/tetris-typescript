@@ -1,10 +1,17 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
     filename: 'index.html',
     template: 'index.html'
 });
+const copyWebpackPlugin = new CopyWebpackPlugin([
+    {
+        from: './assets',
+        to: 'assets'
+    }
+]);
 
 module.exports = {
     entry: './src/Game.ts',
@@ -26,5 +33,5 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
-    plugins: [htmlWebpackPlugin]
+    plugins: [htmlWebpackPlugin, copyWebpackPlugin]
 };
