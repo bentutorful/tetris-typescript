@@ -7,7 +7,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-    entry: './src/game.ts',
+    entry: './src/Game.ts',
     devtool: 'source-map',
     mode: 'production',
     module: {
